@@ -1,0 +1,9 @@
+﻿Group: Widgets
+FriendlyName: Mega Menu
+SystemName: Widgets.MegaMenu
+Version: 1.11
+SupportedVersions: 3.90
+Author: Citytech Team
+DisplayOrder: 1
+FileName: Nop.Plugin.Widgets.MegaMenu.dll
+Description: This adds Mega menu to Header

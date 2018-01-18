@@ -1,0 +1,66 @@
+﻿ @model Nop.Plugin.Widgets.MegaMenu.Models.PublicInfoModel
+
+@using Nop.Web.Framework.UI
+
+<script type="text/javascript" src="~/Plugins/Widgets.MegaMenu/Scripts/jquery/jquery.min.js"></script>
+<div id="dv_ProductAddPopup" style="display:none"></div>
+<script>
+    $(document).ready(function () {
+
+        $.get("/Admin/Category/ProductAddPopup?categoryId=0", function (html) {
+
+            var reshtml = html.replace("pageSize: 10", "pageSize: 100");
+
+            //var reshtml = reshtml.replace('action="/Admin/Category/ProductAddPopup?categoryId=0"', 'action=""');// var reshtml = reshtml.replace('<button type="submit" name="save"', '<button type="submit" name="popup_submit_Product"');
+
+            $('#dv_ProductAddPopup').replaceWith(reshtml);
+           // console.log(html); console.log("______________________________");// console.log(reshtml);
+
+            var currentUrl ="";
+            $.ajaxSetup({
+                beforeSend: function () {
+                    currentUrl =($(this)[0].url);
+                },
+                complete: function () {
+                     checkBoxofProducts(currentUrl);
+                     $("form").attr("action", "/Admin/Widget/ConfigureWidget?systemName=Widgets.MegaMenu");
+                     $("button[name='save']").attr("name", "popup_submit_Product");
+                     $("#products-grid").prepend($(".panel-footer")[0].outerHTML);
+                }
+            });
+
+        });
+
+
+    });
+
+</script>
+
+<script>
+    function checkBoxofProducts(currentUrl){
+        if (currentUrl == "/Admin/Category/ProductAddPopupList") {
+            var SelectedProductsList = '@Model.SelectedProductsList';
+
+            $("input[type='checkbox']").each(function (key, element) {
+                var currentId = ($(element).attr("value"));
+                var IfExistsinArray = checkIfExistsinArray(SelectedProductsList, currentId);
+
+                if (IfExistsinArray) { $(element).attr('checked', 'checked') }
+            });
+        }
+    }
+
+    function checkIfExistsinArray(arrayList, item) {
+        var valueIsInArray = false;
+        if (arrayList) {
+            valueIsInArray = eval(arrayList).reduce(function (previous, current) {
+                return previous || item == current ? true : false;
+            }, false);
+        }
+
+        //ref : https://jsfiddle.net/dtw9n1o5/
+
+        return valueIsInArray;
+    }
+
+</script>

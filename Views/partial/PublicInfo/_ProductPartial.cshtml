@@ -1,0 +1,28 @@
+﻿@model Nop.Plugin.Widgets.MegaMenu.Models.PublicInfoModel
+
+
+
+@if (Model.Product)
+{
+    <div id="dv_Product" style="display : none">
+
+        <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Product <span class="fa fa-caret-down"> </span> </a>
+            <ul class="dropdown-content">
+                @foreach (var product in Model.productOverviewModel)
+                {
+                    <li class="mega-menu-column">
+                        <ul>
+                            <li class="nav-header-product">
+                                <a href="@Url.RouteUrl("Product", new { SeName = product.SeName })" title="@product.DefaultPictureModel.Title">
+                                    <img height="60" width="60" alt="@product.DefaultPictureModel.AlternateText" src="@product.DefaultPictureModel.ImageUrl" title="@product.DefaultPictureModel.Title" />
+                                </a>
+                                <h2>@product.Name</h2>
+                            </li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </li>
+    </div>
+}

@@ -1,0 +1,40 @@
+﻿@model Nop.Plugin.Widgets.MegaMenu.Models.PublicInfoModel
+
+
+@if (Model.Category)
+{
+    <div id="dv_Category" style="display : none">
+
+        <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Cateogory <span class="fa fa-caret-down"> </span> </a>
+            <ul class="dropdown-content">
+
+                @foreach (var category in Model.categorylist)
+                {
+                    <li class="mega-menu-column">
+                        <ul>
+                            <li class="nav-header-category">
+                                @category.Name
+                                <a href="@Url.RouteUrl("Category", new { SeName = category.SeName })" title="@category.PictureModel.Title">
+                                    <img height="100" width="180" alt="@category.PictureModel.AlternateText" src="@category.PictureModel.ImageUrl" title="@category.PictureModel.Title" />
+                                </a>
+                            </li>
+
+                            @foreach (var subcategory in category.SubCategories)
+                            {
+
+                                <li class="nav-header-subcategory">
+                                    <a href="@Url.RouteUrl("Category", new { SeName = subcategory.SeName })" title="@subcategory.PictureModel.Title">
+                                        <!--@*<img height="42" width="42" alt="@subcategory.PictureModel.AlternateText" src="@subcategory.PictureModel.ImageUrl" title="@subcategory.PictureModel.Title"<!--@*<img height="42" width="42" alt="@subcategory.PictureModel.AlternateText" src="@subcategory.PictureModel.ImageUrl" title="@subcategory.PictureModel.Title" />*@-->
+                                        <h2> <i class="fa fa-hand-o-right fa-3" aria-hidden="true"> &nbsp; @subcategory.Name </i>    </h2>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </li>
+    </div>
+}

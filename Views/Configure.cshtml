@@ -1,0 +1,129 @@
+﻿ @using Nop.Web.Framework.UI
+
+@model Nop.Plugin.Widgets.MegaMenu.Models.ConfigurationModel
+@using Nop.Web.Framework;
+
+
+@{
+    Layout = "";
+    Html.AppendScriptParts("~/Plugins/Widgets.MegaMenu/Scripts/_ConfigureMegaMenu.js");
+    Html.AppendCssFileParts("~/Plugins/Widgets.MegaMenu/Scripts/isteven-multi-select/isteven-multi-select.css");
+    Html.AppendCssFileParts("~/Plugins/Widgets.MegaMenu/advanced/advanced.css");
+}
+
+<script type="text/javascript" src="~/Plugins/Widgets.MegaMenu/Scripts/angularjs/angular.js"></script>
+<script type="text/javascript" src="~/Plugins/Widgets.MegaMenu/Scripts/framework/angular-drag-and-drop-lists.js"></script>
+
+<script type="text/javascript" src="~/Plugins/Widgets.MegaMenu/Scripts/angularjs/angular-route.js"></script>
+<script type="text/javascript" src="~/Plugins/Widgets.MegaMenu/Scripts/framework/demo-framework.js"></script>
+<script type="text/javascript" src="~/Plugins/Widgets.MegaMenu/advanced/advanced.js"></script>
+
+<script src="~/Plugins/Widgets.MegaMenu/Scripts/angular-multiselect/dist/angular-bootstrap-multiselect.min.js"></script>
+<script src="~/Plugins/Widgets.MegaMenu/Scripts/isteven-multi-select/isteven-multi-select.js"></script>
+
+
+
+<style>
+    .Show_Product_image{display : @(@Model.Product == true ? "block" :   "none") }
+
+    .Show_Category_image{display : @(@Model.Category == true ? "block" :   "none") }
+
+    .Show_Manufacturer_image{display : @(@Model.Manufacturer == true ? "block" :   "none") }
+
+</style>
+@Html.Action("StoreScopeConfiguration", "Setting", new { area = "Admin" })
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="panel-group" ng-app="demo" ng-init="topMenuCategoriesJson=@(Model.topMenuCategoriesJson)">
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+                <div class="form-group bg-info ">
+                    <div class="col-md-1">
+                        @Html.NopLabelFor(model => model.Product)
+                    </div>
+                    <div class="col-md-1">
+                        @Html.NopEditorFor(model => model.Product)
+                        @Html.ValidationMessageFor(model => model.Product)
+                    </div>
+                     
+
+                    <div class="col-md-2 Show_Product_image">
+
+                        <button type="button" id="btnAddNewProduct" onclick="openAddNewProductPopUp(); return false;" class="btn btn-primary">
+                            <span id="config_product_count" class="badge"> </span> &nbsp; Add product For Mega Menu
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group bg-success  ">
+                    <div class="col-md-1">
+                        @Html.NopLabelFor(model => model.Category)
+                    </div>
+                    <div class="col-md-1">
+                        @Html.NopEditorFor(model => model.Category)
+                        @Html.ValidationMessageFor(model => model.Category)
+                    </div>
+                     
+                    <div class="col-md-7 Show_Category_image" ng-init="allCategories=@Model.AllCategoriesJson">
+                        <div isteven-multi-select
+                             input-model="allCategories"
+                             output-model="outputallCategories"
+                             button-label="imgurl name"
+                             item-label="imgurl id name"
+                             tick-property="ticked"
+                             orientation="horizontal"
+                             style="max-width:100%">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group bg-warning">
+                    <div class="col-md-1">
+                        @Html.NopLabelFor(model => model.Manufacturer)
+                    </div>                   
+
+                    <div class="col-md-1">
+                        @Html.NopEditorFor(model => model.Manufacturer)
+                        @Html.ValidationMessageFor(model => model.Manufacturer)
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.DisplayorderJson)
+        @Html.HiddenFor(m => m.outputAllCategories)
+        <!-- angular -->
+        <div ng-view></div>
+        <!-- angular -->
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-9">
+                        <input type="submit" name="save" class="btn bg-blue" value="@T("Admin.Common.Save")" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<script>
+ // products
+    function openAddNewProductPopUp() {
+        window.open('/MegaMenu/addProductsPopup', '_blank', 'left=250,top=150,width=1200,height=600,toolbar=1,resizable=0');
+    };
+
+    function get_config_product_count() {
+        $.get('/MegaMenu/get_config_product_count', function (response, status) {
+            $("#config_product_count").text(response);
+        });
+    }
+    get_config_product_count();
+</script>

@@ -1,0 +1,37 @@
+﻿ @model Nop.Plugin.Widgets.MegaMenu.Models.PublicInfoModel
+
+@{
+    Layout = "";
+    Html.AppendScriptParts("~/Plugins/Widgets.MegaMenu/Scripts/_publicInfoMegaMenu.js");
+    Html.AppendCssFileParts("~/Plugins/Widgets.MegaMenu/Contents/Css/_publicInfoMegaMenu.css");
+    Html.AppendCssFileParts("~/Plugins/Widgets.MegaMenu/Contents/font-awesome/css/font-awesome.min.css");
+}
+@using Nop.Web.Framework.UI
+
+
+@Html.Raw(Model.product_html)
+@Html.Raw(Model.category_html)
+@Html.Raw(Model.manufacturer_html)
+
+<script>
+    // .html() gets InnerHtml
+    $(document).ready(function () {        
+        var innerdv_Product = $("#dv_Product").html();
+        var innerdv_Category = $("#dv_Category").html();
+        var innerdv_Manufacturer = $("#dv_Manufacturer").html();
+
+        $('.top-menu').prepend(innerdv_Product +innerdv_Category + innerdv_Manufacturer);
+        $('.top-menu').attr("id", "megaMenu")
+
+        //clean up
+        $("#htmlCarrier").remove();
+        $("#dv_Category").remove();
+        $("#dv_Product").remove();
+        $("#dv_Manufacturer").remove();
+    })
+
+</script>
+
+
+
+<script async src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
